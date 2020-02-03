@@ -26,12 +26,15 @@ class Lexer:
 	def tokenize(self,toTokenize):
 		output = re.compile(self.regex)
 		tokens = []
-		i = 0
+
 		for group in output.findall(toTokenize):
 			for match in group:
 				if(match != ""):
-					tokens.append([match,self.names[group.index(match)]])
-			i += 1
+					if(match.endswith("(")):
+						tokens.append([match[:-1],self.names[group.index(match)]])
+						tokens.append(["(","LEFT_PARENTHESES"])
+					else:
+						tokens.append([match,self.names[group.index(match)]])
 		return tokens
 
 	def addReg(self,regexPair):
